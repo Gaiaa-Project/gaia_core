@@ -15,7 +15,7 @@ local function SpawnPlayer()
     end
 
     local pedModel = 'mp_m_freemode_01'
-    Gaia.RequestModel(pedModel, 500)
+    Gaia.RequestModel(pedModel)
 
     local playerPed = PlayerPedId()
     SetPlayerModel(PlayerId(), pedModel)
@@ -27,7 +27,7 @@ local function SpawnPlayer()
 
     SetEntityCoords(playerPed, spawnPosition.x, spawnPosition.y, spawnPosition.z, false, false, false, true)
     SetEntityHeading(playerPed, spawnHeading)
-    SetEntityHealth(200)
+    SetEntityHealth(playerPed, 200)
     SetPedArmour(playerPed, 0.0)
 
     SetModelAsNoLongerNeeded(pedModel)
@@ -43,7 +43,7 @@ local function SpawnPlayer()
 end
 
 CreateThread(function()
-    while not NetworkIsPlayerActive(playerId()) do
+    while not NetworkIsPlayerActive(PlayerId()) do
         Wait(100)
     end
 

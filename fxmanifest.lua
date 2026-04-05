@@ -32,6 +32,7 @@ client_scripts {
 client_scripts {
     'client/lib/**/*.lua',
     'client/modules/**/*.lua',
+    'client/temp_spawn.lua',
 }
 
 server_scripts {
