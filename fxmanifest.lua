@@ -43,6 +43,11 @@ server_scripts {
     'server/modules/migration/inspector.lua',
     'server/modules/migration/main.lua',
 
+    'server/modules/permissions/wildcards.lua',
+    'server/modules/permissions/cache.lua',
+    'server/modules/permissions/seed.lua',
+    'server/modules/permissions/main.lua',
+
     'server/init.lua',
 }
 

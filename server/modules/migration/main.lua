@@ -69,7 +69,7 @@ local function applyMissing(missing)
 end
 
 --- Run the auto-migration system.
-function Gaia.RunMigration()
+function _GaiaInternal.RunMigration()
     local schema <const> = MigrationConfig.schema
 
     if not MigrationConfig.enabled then
