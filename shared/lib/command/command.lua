@@ -180,7 +180,7 @@ function Gaia.command.register(name, callback, options)
     if isServer then
         TriggerClientEvent('gaia_chat:client:addCommand', -1, name)
     else
-        emit('gaia_chat:client:addCommand', name)
+        TriggerEvent('gaia_chat:client:addCommand', name)
     end
 
     if suggestion and suggestion.arguments then
@@ -192,7 +192,7 @@ function Gaia.command.register(name, callback, options)
         if isServer then
             TriggerClientEvent('gaia_chat:client:addSuggestion', -1, name, params)
         else
-            emit('gaia_chat:client:addSuggestion', name, params)
+            TriggerEvent('gaia_chat:client:addSuggestion', name, params)
         end
     end
 
