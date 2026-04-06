@@ -325,8 +325,10 @@ if isServer then
         return getLocalCommands()
     end
 
-    Gaia.RegisterServerCallback('gaia_core:callback:getServerCommands', function()
-        return getLocalCommands()
+    Citizen.CreateThread(function()
+        Gaia.RegisterServerCallback('gaia_core:callback:getServerCommands', function()
+            return getLocalCommands()
+        end)
     end)
 else
     --- Get all client-side registered commands.
