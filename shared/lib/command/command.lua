@@ -179,24 +179,28 @@ function Gaia.command.register(name, callback, options)
 
     commands[name] = registered
 
-    if isServer then
-        TriggerClientEvent('gaia_chat:client:addCommand', -1, name, description)
-    else
-        TriggerEvent('gaia_chat:client:addCommand', name, description)
-    end
-
+    local chatParams = nil
     if suggestion and suggestion.arguments then
-        local params <const> = {}
+        chatParams = {}
         for i = 1, #suggestion.arguments do
             local arg <const> = suggestion.arguments[i]
-            params[i] = { name = arg.name, help = arg.help }
+            chatParams[i] = { name = arg.name, help = arg.help }
         end
+    end
 
-        if isServer then
-            TriggerClientEvent('gaia_chat:client:addSuggestion', -1, name, params)
-        else
-            TriggerEvent('gaia_chat:client:addSuggestion', name, params)
+    if isServer then
+        TriggerClientEvent('gaia_chat:client:addCommand', -1, name, description)
+        if chatParams then
+            TriggerClientEvent('gaia_chat:client:addSuggestion', -1, name, chatParams)
         end
+    else
+        Citizen.CreateThread(function()
+            Wait(1500)
+            TriggerEvent('gaia_chat:client:addCommand', name, description)
+            if chatParams then
+                TriggerEvent('gaia_chat:client:addSuggestion', name, chatParams)
+            end
+        end)
     end
 
     if isServer then
