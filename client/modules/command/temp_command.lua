@@ -5,8 +5,8 @@ Gaia.command.register('car', function(args)
     SetModelAsNoLongerNeeded(hash)
     TaskWarpPedIntoVehicle(PlayerPedId(), vehicle, -1)
 end, {
+    description = 'Spawn a vehicle',
     suggestion = {
-        help = 'Spawn a vehicle',
         arguments = {
             { name = 'model', type = 'string', optional = true, help = 'Vehicle model name' },
         },

@@ -162,10 +162,12 @@ function Gaia.command.register(name, callback, options)
     end
 
     local suggestion <const> = options and options.suggestion or nil
+    local description <const> = options and options.description or nil
 
     local registered <const> = {
         name = name,
         callback = callback,
+        description = description,
         suggestion = suggestion,
         cooldown = options and options.cooldown or 0,
     }
@@ -178,15 +180,16 @@ function Gaia.command.register(name, callback, options)
     commands[name] = registered
 
     if isServer then
-        TriggerClientEvent('gaia_chat:client:addCommand', -1, name)
+        TriggerClientEvent('gaia_chat:client:addCommand', -1, name, description)
     else
-        TriggerEvent('gaia_chat:client:addCommand', name)
+        TriggerEvent('gaia_chat:client:addCommand', name, description)
     end
 
     if suggestion and suggestion.arguments then
         local params <const> = {}
         for i = 1, #suggestion.arguments do
-            params[i] = { name = suggestion.arguments[i].name }
+            local arg <const> = suggestion.arguments[i]
+            params[i] = { name = arg.name, help = arg.help }
         end
 
         if isServer then
