@@ -2,6 +2,7 @@ Gaia = {}
 Gaia.print = {}
 Gaia.math = {}
 Gaia.table = {}
+Gaia.command = {}
 _GaiaInternal = {}
 
 Gaia.name = GetCurrentResourceName()
