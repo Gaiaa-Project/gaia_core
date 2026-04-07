@@ -1,9 +1,13 @@
 Gaia.command.register('car', function(args)
-    local hash <const> = GetHashKey('adder')
+    local model <const> = args.model or 'adder'
+    local hash <const> = GetHashKey(model)
     Gaia.RequestModel(hash)
-    local vehicle <const> = CreateVehicle(hash, 0.0, 0.0, 70.0, 0.0, true, false)
+    local playerPed <const> = PlayerPedId()
+    local coords <const> = GetEntityCoords(playerPed, false)
+    local heading <const> = GetEntityHeading(playerPed)
+    local vehicle <const> = CreateVehicle(hash, coords.x, coords.y, coords.z, heading, true, false)
     SetModelAsNoLongerNeeded(hash)
-    TaskWarpPedIntoVehicle(PlayerPedId(), vehicle, -1)
+    TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
 end, {
     description = 'Spawn a vehicle',
     suggestion = {

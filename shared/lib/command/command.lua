@@ -250,7 +250,7 @@ function Gaia.command.register(name, callback, options)
             if not ok then
                 Gaia.print.warn(('Command \'%s\' threw an error: %s'):format(name, result))
             end
-        end, true)
+        end, false)
     else
         RegisterCommand(name, function(_, args)
             local cmd <const> = commands[name]
@@ -295,6 +295,13 @@ function Gaia.command.unregister(name)
     if not cmd then return false end
 
     commands[name] = nil
+
+    if isServer then
+        TriggerClientEvent('gaia_chat:client:removeCommand', -1, name)
+    else
+        TriggerEvent('gaia_chat:client:removeCommand', name)
+    end
+
     return true
 end
 
