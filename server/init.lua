@@ -6,3 +6,27 @@ MySQL.ready(function()
 
     print('^2 ██████╗  █████╗ ██╗ █████╗   ██████╗ ██████╗  █████╗      ██╗███████╗ █████╗ ████████╗\n██╔════╝ ██╔══██╗██║██╔══██╗  ██╔══██╗██╔══██╗██╔══██╗     ██║██╔════╝██╔══██╗╚══██╔══╝\n██║  ██╗ ███████║██║███████║  ██████╔╝██████╔╝██║  ██║     ██║█████╗  ██║  ╚═╝   ██║\n██║  ╚██╗██╔══██║██║██╔══██║  ██╔═══╝ ██╔══██╗██║  ██║██╗  ██║██╔══╝  ██║  ██╗   ██║\n╚██████╔╝██║  ██║██║██║  ██║  ██║     ██║  ██║╚█████╔╝╚█████╔╝███████╗╚█████╔╝   ██║\n ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝  ╚═╝     ╚═╝  ╚═╝ ╚════╝  ╚════╝ ╚══════╝ ╚════╝    ╚═╝^7')
 end)
+
+RegisterNetEvent('gaia_chat:server:testRestart', function()
+    TriggerClientEvent('gaia_chat:client:addMessage', -1, {
+        type = 'warning',
+        content = 'Restart dans 20 minutes',
+        icon = 'mdi-alert',
+        prefix = 'Server',
+        prefixColor = '#fbbf24',
+    })
+end)
+
+RegisterNetEvent('gaia_chat:server:testFlood', function()
+    local src <const> = source
+    SetTimeout(3000, function()
+        for i = 1, 15 do
+            SetTimeout((i - 1) * 1000, function()
+                TriggerClientEvent('gaia_chat:client:addMessage', src, {
+                    type = 'system',
+                    content = ('Test message #%d — This is a passive chat flood test'):format(i),
+                })
+            end)
+        end
+    end)
+end)
