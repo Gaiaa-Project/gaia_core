@@ -1,19 +1,21 @@
 PermissionSeedConfig = {
-    --- Default roles and permissions seeded into the database on first boot
+    --- Default roles and permissions seeded into the database on first boot.
     --- After seeding, the database is the source of truth — changes made via
-    --- the API (createRole, addPermissionToRole, etc.) persist in the DB
+    --- the API (createRole, addPermissionToRole, etc.) persist in the DB.
     ---
     --- Role types:
     ---   isPrimary = true  → hierarchical role, only ONE per character, uses inheritance chain
     ---   isPrimary = false → secondary role, MULTIPLE per character, no inheritance, additive permissions
     ---
-    --- Permission format: namespace.action (e.g., "mod.kick", "admin.ban")
+    --- Permission format: something.something (e.g., "chat.staff", "police.mdt_access")
+    --- The dot separator is required for wildcards to work.
+    ---
     --- Wildcards:
-    ---   "admin.*"  → all permissions in the "admin" namespace
-    ---   "*.kick"   → the "kick" action in any namespace
+    ---   "chat.*"   → all permissions starting with "chat."
+    ---   "*.staff"  → any permission ending with ".staff"
     ---   "*"        → ALL permissions (superadmin)
     --- Negation:
-    ---   "-admin.ban" → explicitly denies this permission even if a wildcard grants it
+    ---   "-chat.staff" → explicitly denies this permission even if a wildcard grants it
     ---
     --- Inheritance: inheritsFrom creates a hierarchy chain
     ---   Owner > Admin > Dev > Moderator > User
@@ -33,12 +35,7 @@ PermissionSeedConfig = {
             isPrimary = true,
             inheritsFrom = 'user',
             permissions = {
-                'mod.kick',
-                'mod.warn',
-                'mod.spectate',
-                'mod.teleport',
-                'mod.freeze',
-                'mod.noclip',
+                'chat.staff',
             },
         },
         {
@@ -46,18 +43,14 @@ PermissionSeedConfig = {
             label = 'Developer',
             isPrimary = true,
             inheritsFrom = 'moderator',
-            permissions = {
-                'dev.*',
-            },
+            permissions = {},
         },
         {
             name = 'admin',
             label = 'Administrator',
             isPrimary = true,
             inheritsFrom = 'dev',
-            permissions = {
-                'admin.*',
-            },
+            permissions = {},
         },
         {
             name = 'owner',
@@ -75,31 +68,19 @@ PermissionSeedConfig = {
             name = 'event_manager',
             label = 'Event Manager',
             isPrimary = false,
-            permissions = {
-                'event.create',
-                'event.manage',
-                'event.delete',
-                'event.reward',
-            },
+            permissions = {},
         },
         {
             name = 'support',
             label = 'Support',
             isPrimary = false,
-            permissions = {
-                'support.ticket',
-                'support.reply',
-                'support.close',
-            },
+            permissions = {},
         },
         {
             name = 'recruiter',
             label = 'Recruiter',
             isPrimary = false,
-            permissions = {
-                'recruit.invite',
-                'recruit.review',
-            },
+            permissions = {},
         },
     },
 }
