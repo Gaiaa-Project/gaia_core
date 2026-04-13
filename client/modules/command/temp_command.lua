@@ -16,17 +16,3 @@ end, {
         },
     },
 })
-
-Gaia.command.register('testrestart', function()
-    SetTimeout(3000, function()
-        TriggerServerEvent('gaia_chat:server:testRestart')
-    end)
-end, {
-    description = 'Test passive chat with a fake restart message',
-})
-
-Gaia.command.register('testflood', function()
-    TriggerServerEvent('gaia_chat:server:testFlood')
-end, {
-    description = 'Test passive chat with 15 messages over 15 seconds',
-})
