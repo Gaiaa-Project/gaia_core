@@ -49,6 +49,8 @@ server_scripts {
     'server/modules/permissions/seed.lua',
     'server/modules/permissions/main.lua',
 
+    'server/modules/**/*.lua',
+
     'server/init.lua',
 }
 
