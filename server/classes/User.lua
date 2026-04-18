@@ -16,7 +16,7 @@ function Gaia.CreateUser(sessionId, data)
     ---@field lastSeen number Timestamp of last activity.
     ---@field lastPlayedCharacter number|nil The ID of the last played character.
     ---@field totalPlaytime number Total playtime across all characters in seconds.
-    ---@field createdAt string Timestamp of when the user was created.
+    ---@field createdAt string|nil Timestamp of when the user was created.
     local self = {}
 
     self.id = data.id
@@ -30,7 +30,7 @@ function Gaia.CreateUser(sessionId, data)
     self.lastSeen = os.time()
     self.lastPlayedCharacter = data.last_played_character or nil
     self.totalPlaytime = data.total_playtime or 0
-    self.createdAt = data.created_at
+    self.createdAt = data.created_at or nil
 
     --- Get a specific identifier by type.
     ---@param identifierType string The type of identifier (license, steam, discord, etc.).
