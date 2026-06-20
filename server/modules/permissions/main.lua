@@ -40,11 +40,11 @@ local function loadAndBuildCache()
     rebuildPermissionCache()
 end
 
---- Resolve and cache all permissions for a character.
+--- Resolve and cache the active roles for a character.
 ---@param charId number The character ID.
----@return table perms A set of permissions { ['perm.name'] = true }.
-local function resolveCharacterPermissions(charId)
-    local cached <const> = _GaiaInternal.GetCharacterPermissions(charId)
+---@return table roles A list of role objects.
+local function resolveCharacterRoles(charId)
+    local cached <const> = _GaiaInternal.GetCharacterRoles(charId)
     if cached then return cached end
 
     local rows <const> = MySQL.query.await(
@@ -52,10 +52,29 @@ local function resolveCharacterPermissions(charId)
         { charId }
     )
 
-    local perms <const> = {}
+    local roles <const> = {}
 
     for i = 1, #rows do
-        local rolePerms <const> = _GaiaInternal.GetRolePermissions(rows[i].role_id)
+        local role <const> = rolesMap[rows[i].role_id]
+        if role then roles[#roles + 1] = role end
+    end
+
+    _GaiaInternal.SetCharacterRoles(charId, roles)
+    return roles
+end
+
+--- Resolve and cache all permissions for a character.
+---@param charId number The character ID.
+---@return table perms A set of permissions { ['perm.name'] = true }.
+local function resolveCharacterPermissions(charId)
+    local cached <const> = _GaiaInternal.GetCharacterPermissions(charId)
+    if cached then return cached end
+
+    local roles <const> = resolveCharacterRoles(charId)
+    local perms <const> = {}
+
+    for i = 1, #roles do
+        local rolePerms <const> = _GaiaInternal.GetRolePermissions(roles[i].id)
         for perm in pairs(rolePerms) do
             perms[perm] = true
         end
@@ -121,19 +140,7 @@ end
 ---@param charId number The character ID.
 ---@return table roles A list of role tables.
 function Gaia.permissions.getCharacterRoles(charId)
-    local rows <const> = MySQL.query.await(
-        'SELECT role_id FROM character_roles WHERE character_id = ? AND (expires_at IS NULL OR expires_at > NOW())',
-        { charId }
-    )
-
-    local results <const> = {}
-
-    for i = 1, #rows do
-        local role <const> = rolesMap[rows[i].role_id]
-        if role then results[#results + 1] = role end
-    end
-
-    return results
+    return resolveCharacterRoles(charId)
 end
 
 --- Get all resolved permissions for a character as a list.

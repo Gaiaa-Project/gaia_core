@@ -1,5 +1,6 @@
 local rolePermissionCache = {}
 local characterPermissionCache = {}
+local characterRoleCache = {}
 local inheritanceDepthCache = {}
 
 --- Resolve all permissions for a role including inherited permissions.
@@ -91,13 +92,29 @@ function _GaiaInternal.SetCharacterPermissions(charId, perms)
     characterPermissionCache[charId] = perms
 end
 
---- Invalidate the permission cache for a character.
+--- Get cached active roles for a character.
+---@param charId number The character ID.
+---@return table|nil roles A list of role objects or nil if not cached.
+function _GaiaInternal.GetCharacterRoles(charId)
+    return characterRoleCache[charId]
+end
+
+--- Set cached active roles for a character.
+---@param charId number The character ID.
+---@param roles table A list of role objects.
+function _GaiaInternal.SetCharacterRoles(charId, roles)
+    characterRoleCache[charId] = roles
+end
+
+--- Invalidate the role and permission cache for a character.
 ---@param charId number The character ID.
 function _GaiaInternal.InvalidateCharacter(charId)
     characterPermissionCache[charId] = nil
+    characterRoleCache[charId] = nil
 end
 
---- Invalidate the permission cache for all characters.
+--- Invalidate the role and permission cache for all characters.
 function _GaiaInternal.InvalidateAllCharacters()
     characterPermissionCache = {}
+    characterRoleCache = {}
 end

@@ -189,17 +189,11 @@ function Gaia.command.register(name, callback, options)
     end
 
     if isServer then
-        TriggerClientEvent('gaia_chat:client:addCommand', -1, name, description)
-        if chatParams then
-            TriggerClientEvent('gaia_chat:client:addSuggestion', -1, name, chatParams)
-        end
+        TriggerClientEvent('gaia_core:client:commandRegistered', -1, name, description, chatParams)
     else
         Citizen.CreateThread(function()
             Wait(1500)
-            TriggerEvent('gaia_chat:client:addCommand', name, description)
-            if chatParams then
-                TriggerEvent('gaia_chat:client:addSuggestion', name, chatParams)
-            end
+            TriggerEvent('gaia_core:client:commandRegistered', name, description, chatParams)
         end)
     end
 
@@ -297,9 +291,9 @@ function Gaia.command.unregister(name)
     commands[name] = nil
 
     if isServer then
-        TriggerClientEvent('gaia_chat:client:removeCommand', -1, name)
+        TriggerClientEvent('gaia_core:client:commandUnregistered', -1, name)
     else
-        TriggerEvent('gaia_chat:client:removeCommand', name)
+        TriggerEvent('gaia_core:client:commandUnregistered', name)
     end
 
     return true
