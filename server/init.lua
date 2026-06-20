@@ -1,5 +1,8 @@
 MySQL.ready(function()
     _GaiaInternal.RunMigration()
+
+    GlobalState['gaia_core:state:schemaReady'] = true
+
     _GaiaInternal.InitPermissions()
 
     Gaia.print.success('Gaia Core Initialization Finish - Ready')

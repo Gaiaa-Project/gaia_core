@@ -40,6 +40,8 @@ server_scripts {
 
     'server/lib/**/*.lua',
 
+    'server/classes/**/*.lua',
+
     'server/modules/migration/sqlGenerator.lua',
     'server/modules/migration/inspector.lua',
     'server/modules/migration/main.lua',

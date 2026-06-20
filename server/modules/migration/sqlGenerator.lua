@@ -83,7 +83,13 @@ end
 ---@return string sql The ALTER TABLE SQL statement.
 function _GaiaInternal.GenerateAddColumnSQL(tableName, col)
     validateIdentifier(tableName, 'table')
-    return ('ALTER TABLE `%s` ADD COLUMN %s'):format(tableName, generateColumnSQL(col))
+    local sql = ('ALTER TABLE `%s` ADD COLUMN %s'):format(tableName, generateColumnSQL(col))
+
+    if col.autoIncrement then
+        sql = sql .. ' PRIMARY KEY'
+    end
+
+    return sql
 end
 
 --- Generate an ALTER TABLE ADD FOREIGN KEY SQL statement.
